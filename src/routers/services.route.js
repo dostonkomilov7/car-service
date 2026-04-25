@@ -1,11 +1,13 @@
 import { Router } from "express";
 import servicesController from "../controllers/services.controller.js";
+import { Protected } from "../middlewares/protected.middleware.js";
+import { Role } from "../middlewares/roles.middleware.js";
 
 const serviceRouter = Router();
 
 serviceRouter
-    .get("/services", servicesController.getAllServices)
-    .post("/services", servicesController.createService) //ONLY FOR ADMINS
-    .delete("/services/:id", servicesController.deleteService) //ONLY FOR ADMINS
+    // .get("/",Protected(true), servicesController.getAllServices)
+    .post("/", Role("ADMIN"), servicesController.createService) //ONLY FOR ADMINS
+    .post("/delete", Role("ADMIN"), servicesController.deleteService) //ONLY FOR ADMINS
 
 export default serviceRouter;

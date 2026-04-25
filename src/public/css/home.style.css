@@ -1,0 +1,394 @@
+/* ── Tokens ─────────────────────────────────────────── */
+:root {
+  --bg:       #0e0e0f;
+  --surface:  #17171a;
+  --card:     #1e1e23;
+  --border:   #2e2e35;
+  --amber:    #f0a500;
+  --amber-dim:#c48400;
+  --text:     #f0eff0;
+  --muted:    #8a8a96;
+}
+
+/* ── Base ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Barlow', -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Import fonts in your <head>:
+   https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500&display=swap */
+
+h1, h2, h3, .section-label, .section-title, .stat__num,
+.svc-card__title, .btn, .trust__name, .cta-banner__title,
+.hero__badge {
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 0.01em;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ── Navbar ─────────────────────────────────────────── */
+.navbar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar__brand {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.navbar__brand .accent { color: var(--amber); }
+
+.navbar__logo {
+  width: 32px;
+  height: 32px;
+  background: var(--amber);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.navbar__links {
+  display: flex;
+  gap: 2rem;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  list-style: none;
+}
+
+.navbar__links a:hover,
+.navbar__links .active { color: var(--text); }
+
+/* ── Buttons ────────────────────────────────────────── */
+.btn {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 11px 24px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+
+.btn:active { transform: scale(0.98); }
+
+.btn--primary { background: var(--amber); color: #0e0e0f; }
+.btn--secondary { background: var(--muted); color: white; }
+.btn--primary:hover { opacity: 0.9; }
+.btn--secondary:hover { opacity: 0.9; }
+
+.btn--ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.btn--ghost:hover { border-color: var(--muted); }
+
+.btn--dark { background: #0e0e0f; color: var(--amber); }
+.btn--dark:hover { opacity: 0.88; }
+
+/* ── Shared section labels ──────────────────────────── */
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--amber);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-size: 36px;
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.accent { color: var(--amber); }
+
+/* ── Hero ───────────────────────────────────────────── */
+.hero {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 5rem 2rem 4rem;
+}
+
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(240, 165, 0, 0.1);
+  border: 1px solid rgba(240, 165, 0, 0.25);
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--amber);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.hero__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--amber);
+}
+
+.hero__title {
+  font-size: clamp(42px, 6vw, 72px);
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.hero__sub {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 480px;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+.hero__actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 3.5rem;
+}
+
+.hero__stats {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  max-width: 560px;
+}
+
+.stat {
+  flex: 1;
+  padding: 16px 20px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.stat:last-child { border-right: none; }
+
+.stat__num {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--amber);
+}
+
+.stat__label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+/* ── Services ───────────────────────────────────────── */
+.services { padding: 4rem 2rem; }
+
+.services__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.services__link {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--amber);
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--amber-dim);
+  padding-bottom: 2px;
+}
+
+.services__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+/* ── Service Card ───────────────────────────────────── */
+.svc-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: border-color 0.2s;
+}
+
+.svc-card:hover { border-color: rgba(240, 165, 0, 0.35); }
+
+.svc-card__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: rgba(240, 165, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.svc-card__title {
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.svc-card__desc {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+}
+
+.svc-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.svc-card__price {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--amber);
+}
+
+.svc-card__btn {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 12px;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.svc-card__btn:hover {
+  color: var(--amber);
+  border-color: var(--amber-dim);
+}
+
+/* ── Trust Section ──────────────────────────────────── */
+.trust {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 3.5rem 2rem;
+}
+
+.trust__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.trust__card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.trust__name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--amber);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.trust__card p {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ── CTA Banner ─────────────────────────────────────── */
+.cta-banner {
+  background: var(--amber);
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.cta-banner__title {
+  font-size: 36px;
+  font-weight: 800;
+  color: #0e0e0f;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.cta-banner__sub {
+  font-size: 14px;
+  color: rgba(14, 14, 15, 0.65);
+  margin-bottom: 1.75rem;
+}
+
+/* ── Footer ─────────────────────────────────────────── */
+.footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer__brand {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.footer p,
+.footer__links a {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.footer__links {
+  display: flex;
+  gap: 1.5rem;
+}

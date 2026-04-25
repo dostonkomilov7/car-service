@@ -1,0 +1,131 @@
+<link rel="stylesheet" href="../css/dashboard.style.css">
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="label">Control Panel</div>
+      <h1>Admin Dashboard</h1>
+    </div>
+
+    <div class="actions">
+      <button class="btn-secondary">Export CSV</button>
+      <a href="/booking" class="btn-primary">+ New Booking</a>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <span>Total Bookings</span>
+      <strong>{{stats.total}}</strong>
+    </div>
+
+    <div class="stat">
+      <span>This Month</span>
+      <strong class="amber">{{stats.month}}</strong>
+    </div>
+
+    <div class="stat">
+      <span>Confirmed</span>
+      <strong class="green">{{stats.confirmed}}</strong>
+    </div>
+
+    <div class="stat">
+      <span>Pending</span>
+      <strong class="red">{{stats.pending}}</strong>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-card">
+
+    <!-- SEARCH -->
+    <div class="table-toolbar">
+      <input type="text" placeholder="Search bookings..." id="searchInput">
+      <span>Showing <b id="rowCount">{{bookings.length}}</b> bookings</span>
+    </div>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Date</th>
+            <th>Device</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+
+        <tbody id="tableBody">
+          {{#each bookings}}
+          <tr>
+            <td><input type="checkbox"></td>
+
+            <td class="name">
+              <div class="user">
+                <div class="avatar">
+                  {{initials this.name}}
+                </div>
+                <span>{{this.name}}</span>
+              </div>
+            </td>
+
+            <td class="email">{{this.email}}Doston@exm.com</td>
+
+            <td class="date">{{this.date}}00-00-0000</td>
+
+            <td>
+              <span class="device {{deviceClass this.device}}">
+                {{this.device}} mac
+              </span>
+            </td>
+
+            <td>
+              <span class="status {{statusClass this.status}}">
+                {{this.status}}
+              </span>
+            </td>
+
+            <td class="actions">
+              <button>👁</button>
+              <button>🗑</button>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+{{!-- <div class="card">
+    <h1>Admin Dashboard</h1>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Date</th>
+            <th>Device</th>
+        </tr>
+
+        {{#each bookings}}
+        <tr>
+            <td>{{this.name}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.date}}</td>
+            <td>{{this.device}}</td>
+        </tr>
+        {{/each}}
+    </table>
+</div> --}}

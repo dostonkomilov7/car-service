@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="../css/create-booking.style.css">
+{{> alerts}}
+
+<div class="card">
+    <h1>Create Booking</h1>
+
+    {{> alerts}}
+
+    <form action="/api/bookings/send-otp" method="POST">
+        <input type="text" placeholder="Full Name" required>
+        <input type="text" name="serviceName" placeholder="Service Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        {{!-- <input type="date" name="date" placeholder="Date" required> --}}
+
+        <button type="submit">Send OTP</button>
+    </form>
+</div>

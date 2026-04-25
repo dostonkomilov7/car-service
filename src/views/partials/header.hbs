@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="../css/partials.style.css">
+
+<nav class="navbar">
+  <a href="/api" class="navbar__brand">
+    <div class="navbar__logo">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M2 12l1.5-5h11L16 12" stroke="#0e0e0f" stroke-width="1.5" stroke-linecap="round"/>
+        <rect x="1" y="12" width="16" height="3" rx="1.5" fill="#0e0e0f"/>
+        <circle cx="5" cy="15.5" r="1.5" fill="#0e0e0f"/>
+        <circle cx="13" cy="15.5" r="1.5" fill="#0e0e0f"/>
+        <path d="M5 9h8" stroke="#0e0e0f" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span>AUTO<span class="accent">PRO</span></span>
+  </a>
+
+  <ul class="navbar__links">
+    <li><a href="/api/home" class="{{#if isHome}}active{{/if}}">Home</a></li>
+    <li><a href="/api/home#services" class="{{#if isServices}}active{{/if}}">Services</a></li>
+    <li><a href="/api/my-bookings" class="{{#if isBookings}}active{{/if}}">My Bookings</a></li>
+  </ul>
+  <div>
+    <a href="/api/create" class="btn btn--primary">Book Now</a>
+    <a href="/api/logout" class="btn btn--secondary">Log Out</a>
+  </div>
+</nav>
+
+
+{{!-- <header>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/booking">Book</a>
+        <a href="/my-bookings">My Bookings</a>
+        <a href="/admin">Admin</a>
+        {{#if user}}
+            <span>{{user.email}}</span>
+        {{else}}
+            <a href="/login">Login</a>
+        {{/if}}
+    </nav>
+</header> --}}

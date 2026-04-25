@@ -1,4 +1,4 @@
-import { pool } from "../configs/db.config.js";
+import pool from "../configs/db.config.js";
 import jwtConfig from "../configs/jwt.config.js";
 import { NotFoundException } from "../exceptions/not-found.exception.js";
 import jwt from "jsonwebtoken";
@@ -17,14 +17,14 @@ class AuthController {
                 "SELECT * FROM users WHERE email = $1", [email]
             );
 
-            if (!existingUser) {
-                throw new NotFoundException("User is not found")
+            if (!existingUser[0]) {
+                return res.redirect("/api/login?error=Email is not found");
             }
 
             const isPassSame = await this.#_comparePassword(password, existingUser[0].password);
 
             if (!isPassSame) {
-                throw new ConflictRequest("Given password invalid");
+                return res.redirect("/api/login?error=Password is invalid");
             }
 
             const ua = new UAParser(req.headers["user-agent"]);
@@ -37,23 +37,33 @@ class AuthController {
 
             const accessToken = await this.#_generateAccessToken({ id: existingUser[0].id, role: existingUser[0].role, device: device.device.model });
             const refreshToken = await this.#_generateRefreshToken({ id: existingUser[0].id, role: existingUser[0].role, device: device.device.model });
+            res.cookie("userId", existingUser[0].id, {
+                httpOnly: false,
+                secure: false,
+                sameSite: "lax",
+                path: "/",
+                maxAge: 20 * 60 * 1000,
+
+            });
 
             res.cookie("accessToken", accessToken, {
-                signed: true,
-                expires: new Date(Date.now() + 5000),
+                httpOnly: false,
+                secure: false,
+                sameSite: "lax",
+                path: "/",
+                maxAge: 20 * 60 * 1000,
+
             });
 
             res.cookie("refreshToken", refreshToken, {
-                signed: true,
-                expires: new Date(Date.now() + 10000)
+                httpOnly: false,
+                secure: false,
+                sameSite: "lax",
+                path: "/",
+                maxAge: 5 * 24 * 60 * 60 * 1000,
             });
 
-            res.send({
-                success: true,
-                userId: existingUser[0].id,
-                accessToken,
-                refreshToken
-            });
+            res.redirect("/api/home")
 
         } catch (error) {
             console.log(error)
@@ -68,8 +78,8 @@ class AuthController {
                 "SELECT * FROM users WHERE email = $1", [email]
             );
 
-            if (existingUser) {
-                throw new ConflictRequest("User have already existed")
+            if (existingUser[0]?.id) {
+                return res.redirect("/register")
             }
 
             const hashedPassword = await this.#_hashPassword(password);
@@ -77,30 +87,42 @@ class AuthController {
             const ua = new UAParser(req.headers["user-agent"]);
             const device = ua.getResult();
 
-            const {rows: newUser} = await pool.query(
-                "INSERT INTO users(name, role, device_name, device_type, email, password) VALUE ($1, USER, $2, $3, $4, $5)",
-                [name, device.device.model || device.device.vendor, device.device.type || "desktop", email, password]
+            const { rows: newUser } = await pool.query(
+                "INSERT INTO users(name, role, device_name, device_type, email, password) VALUES ($1, USER, $2, $3, $4, $5) RETURNING id",
+                [name, device.device.model || device.device.vendor, device.device.type || "desktop", email, hashedPassword]
             );
 
             const accessToken = await this.#_generateAccessToken({ id: newUser[0].id, role: newUser[0].role, device: device.device.model });
             const refreshToken = await this.#_generateRefreshToken({ id: newUser[0].id, role: newUser[0].role, device: device.device.model });
 
+            res.cookie("userId", newUser[0].id, {
+                httpOnly: false,
+                secure: false,
+                sameSite: "lax",
+                path: "/",
+                maxAge: 20 * 60 * 1000,
+
+            });
+
             res.cookie("accessToken", accessToken, {
-                signed: true,
-                expires: new Date(Date.now() + 5000),
+                httpOnly: false,
+                secure: false,
+                sameSite: "lax",
+                accessToken,
+                path: "/",
+                maxAge: 20 * 60 * 1000,
             });
 
             res.cookie("refreshToken", refreshToken, {
-                signed: true,
-                expires: new Date(Date.now() + 10000)
+                httpOnly: false,
+                secure: false,
+                sameSite: "lax",
+                refreshToken,
+                path: "/",
+                maxAge: 20 * 60 * 1000,
             });
 
-            res.send({
-                success: true,
-                userId: newUser[0].id,
-                accessToken,
-                refreshToken
-            });
+            res.redirect("/api/home");
 
         } catch (error) {
             console.log(error)
@@ -161,7 +183,7 @@ class AuthController {
     };
 
     #_hashPassword = async (pass) => {
-        const hashedPass = await bcrypt.hash(10, pass);
+        const hashedPass = await bcrypt.hash(pass, 10);
 
         return hashedPass
     };

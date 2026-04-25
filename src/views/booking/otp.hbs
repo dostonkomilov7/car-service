@@ -1,0 +1,41 @@
+<link rel="stylesheet" href="../css/otp.style.css">
+<div class="otp-card">
+
+  <div class="otp-header">
+    <div class="otp-icon">
+      <!-- lock SVG icon -->
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <rect x="3" y="10" width="16" height="10" rx="2.5" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M7 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <circle cx="11" cy="15" r="1.5" fill="currentColor"/>
+      </svg>
+    </div>
+    <h1>Verify OTP</h1>
+    <p class="otp-subtext">We sent a 6-digit code to your email. Enter it below to confirm your booking.</p>
+  </div>
+
+  {{> alerts}}
+
+  <form action="/api/bookings/confirm-otp" method="POST">
+    <input type="hidden" name="bookingId" value="{{id}}">
+    <input type="hidden" name="otp" id="otpValue">
+
+    <div class="otp-field">
+      <label>6-digit code</label>
+      <div class="otp-digits">
+        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="one-time-code">
+        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+        <input class="otp-digit" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]">
+      </div>
+    </div>
+
+    <button type="submit">Confirm Booking</button>
+  </form>
+
+  <p class="otp-resend">Didn't receive a code? <a href="/booking/resend-otp?id={{id}}">Resend OTP</a></p>
+</div>
+
+<script src="../js/otp.js"></script>

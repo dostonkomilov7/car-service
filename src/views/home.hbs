@@ -1,1 +1,79 @@
-<h1>HELLO WORLD</h1>
+<link rel="stylesheet" href="../css/home.style.css">
+
+{{> header}}
+{{> alerts}}
+<!-- Hero -->
+<section class="hero">
+  <div class="hero__badge">
+    <span class="hero__dot"></span>Certified Auto Specialists
+  </div>
+  <h1 class="hero__title">Your Car.<br><span class="accent">Our Craft.</span></h1>
+  <p class="hero__sub">Professional car care from oil changes to full overhauls. Trusted by thousands of drivers — transparent pricing, expert hands, zero shortcuts.</p>
+  <div class="hero__actions">
+    <a href="/api/create" class="btn btn--primary">Book a Service</a>
+    <a href="#services" class="btn btn--ghost">View All Services</a>
+  </div>
+  <div class="hero__stats">
+    <div class="stat"><span class="stat__num">12K+</span><span class="stat__label">Cars Serviced</span></div>
+    <div class="stat"><span class="stat__num">98%</span><span class="stat__label">Satisfaction Rate</span></div>
+    <div class="stat"><span class="stat__num">15yr</span><span class="stat__label">In Business</span></div>
+  </div>
+</section>
+
+<!-- Services Grid -->
+<section id="services" class="services">
+  <div class="services__head">
+    <div>
+      <div class="section-label">What We Do</div>
+      <h2 class="section-title">Our Services</h2>
+    </div>
+    <a href="/api/create" class="services__link">Book Any Service →</a>
+  </div>
+
+  <div class="services__grid">
+    {{#each services}}
+    <div class="svc-card">
+      <div class="svc-card__icon">{{{this.icon}}}</div>
+      <h3 class="svc-card__title">{{this.service_name}}</h3>
+      <p class="svc-card__desc">{{this.description}}</p>
+      <div class="svc-card__footer">
+        <span class="svc-card__price">{{this.service_price}} sum</span>
+        <a href="/api/create?service={{this.slug}}" class="svc-card__btn">Book →</a>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+</section>
+
+<!-- Trust Section -->
+<section class="trust">
+  <div class="section-label" style="text-align:center">Why Choose Us</div>
+  <h2 class="section-title" style="text-align:center;margin-bottom:2.5rem">Built on Trust</h2>
+  <div class="trust__grid">
+    <div class="trust__card">
+      <div class="trust__name">Transparent Pricing</div>
+      <p>No hidden fees. You see the quote before we touch your car.</p>
+    </div>
+    <div class="trust__card">
+      <div class="trust__name">Certified Mechanics</div>
+      <p>ASE-certified technicians with 10+ years average experience.</p>
+    </div>
+    <div class="trust__card">
+      <div class="trust__name">Same-Day Service</div>
+      <p>Most services completed the same day. Drop off and go.</p>
+    </div>
+    <div class="trust__card">
+      <div class="trust__name">12-Month Warranty</div>
+      <p>All repairs backed by a 12-month or 12,000 km warranty.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Banner -->
+<section class="cta-banner">
+  <h2 class="cta-banner__title">Ready to Book?</h2>
+  <p class="cta-banner__sub">Takes 2 minutes. Choose your service, pick a date, done.</p>
+  <a href="/api/create" class="btn btn--dark">Book a Service Now</a>
+</section>
+
+{{> footer}}

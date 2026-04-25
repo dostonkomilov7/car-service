@@ -1,4 +1,4 @@
-import { pool } from "../configs/db.config";
+import pool from "../configs/db.config.js";
 
 const TABLE_SCHEMAS = `
     CREATE TABLE IF NOT EXISTS users (
@@ -14,6 +14,8 @@ const TABLE_SCHEMAS = `
     CREATE TABLE IF NOT EXISTS services (
         id SERIAL PRIMARY KEY,
         service_name VARCHAR(128) NOT NULL,
+        service_price VARCHAR(128) NOT NULL,
+        description VARCHAR(128) NOT NULL,
         image VARCHAR(128)
     );
 
@@ -26,7 +28,9 @@ const TABLE_SCHEMAS = `
         ON DELETE SET NULL
         ON UPDATE NO ACTION,
         date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        status VARCHAR(128) NOT NULL
+        status VARCHAR(128) NOT NULL,
+        otp INT,
+        otp_expire VARCHAR(128)
     );
 `
 
@@ -41,5 +45,5 @@ const migrate = async () => {
 }
 
 migrate()
-    .then((res) => res)
+    .then((res) => console.log(res))
     .catch((err) => console.log(err))
