@@ -90,7 +90,7 @@ apiRouter.get("/dashboard", Protected(true), Role("ADMIN"), async(req, res) => {
   if (!bookings[0]) {
     return res.render("admin/dashboard", { stats, error, message: "Bookings not found" });
   }
-  console.log(bookings[0].id);
+  
   const confirmedDate = bookings[0].date.toString();
 
   res.render("admin/dashboard", { bookings: bookings, date: confirmedDate, stats, error, message, success });
