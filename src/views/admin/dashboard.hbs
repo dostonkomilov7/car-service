@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="../css/dashboard.style.css">
+{{> alerts}}
 
 <div class="container">
 
@@ -10,8 +11,7 @@
     </div>
 
     <div class="actions">
-      <button class="btn-secondary">Export CSV</button>
-      <a href="/booking" class="btn-primary">+ New Booking</a>
+      <a href="/api/create-service" class="btn-primary">+ New Service</a>
     </div>
   </div>
 
@@ -41,20 +41,15 @@
   <!-- TABLE -->
   <div class="table-card">
 
-    <!-- SEARCH -->
-    <div class="table-toolbar">
-      <input type="text" placeholder="Search bookings..." id="searchInput">
-      <span>Showing <b id="rowCount">{{bookings.length}}</b> bookings</span>
-    </div>
-
     <div class="table-wrapper">
       <table>
         <thead>
           <tr>
-            <th></th>
+            <th>id</th>
             <th>Name</th>
             <th>Email</th>
             <th>Date</th>
+            <th>Service Name</th>
             <th>Device</th>
             <th>Status</th>
             <th></th>
@@ -63,39 +58,38 @@
 
         <tbody id="tableBody">
           {{#each bookings}}
-          <tr>
-            <td><input type="checkbox"></td>
-
-            <td class="name">
-              <div class="user">
-                <div class="avatar">
-                  {{initials this.name}}
+          <form action="/api/bookings/status/{{this.id}}?_method=PATCH" method="post">
+            <tr>
+              <td class="id">{{this.id}}</td>
+              <td class="name">
+                <div class="user">
+                  <span>{{this.name}}</span>
                 </div>
-                <span>{{this.name}}</span>
-              </div>
-            </td>
+              </td>
 
-            <td class="email">{{this.email}}Doston@exm.com</td>
+              <td class="email">{{this.email}}</td>
 
-            <td class="date">{{this.date}}00-00-0000</td>
+              <td class="date">{{date}}</td>
 
-            <td>
-              <span class="device {{deviceClass this.device}}">
-                {{this.device}} mac
-              </span>
-            </td>
+              <td class="service-name">{{this.service_name}}</td>
 
-            <td>
-              <span class="status {{statusClass this.status}}">
-                {{this.status}}
-              </span>
-            </td>
+              <td>
+                <span class="device">
+                  {{this.device_name}}
+                </span>
+              </td>
 
-            <td class="actions">
-              <button>👁</button>
-              <button>🗑</button>
-            </td>
-          </tr>
+              <td>
+                <span class="status {{this.status}}">
+                  {{this.status}}
+                </span>
+              </td>
+
+              <td class="actions">
+                <button type="submit"><i class="fa-regular fa-circle-check"></i></button>
+              </td>
+            </tr>
+          </form>
           {{/each}}
         </tbody>
       </table>
@@ -103,29 +97,3 @@
 
   </div>
 </div>
-
-
-
-
-
-{{!-- <div class="card">
-    <h1>Admin Dashboard</h1>
-
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Date</th>
-            <th>Device</th>
-        </tr>
-
-        {{#each bookings}}
-        <tr>
-            <td>{{this.name}}</td>
-            <td>{{this.email}}</td>
-            <td>{{this.date}}</td>
-            <td>{{this.device}}</td>
-        </tr>
-        {{/each}}
-    </table>
-</div> --}}

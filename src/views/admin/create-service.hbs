@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="../css/create-service.style.css">
+<div class="cs-page">
+
+    <div class="cs-page__head">
+        <div>
+            <div class="section-label">Admin Panel</div>
+            <h1 class="cs-title">Create Service</h1>
+        </div>
+        <a href="/api/dashboard" class="cs-back-btn">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M9 11L5 7l4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+            Back to Dashboard
+        </a>
+    </div>
+
+    {{> alerts}}
+
+    <form action="/api/services" method="POST" class="cs-layout">
+
+        <!-- ── LEFT COLUMN ─────────────────────────── -->
+        <div class="cs-main">
+
+            <!-- Basic Info -->
+            <div class="cs-card">
+                <div class="cs-card__head">
+                    <span class="cs-card__dot"></span>Basic Info
+                </div>
+                <div class="cs-card__body">
+
+                    <div class="field">
+                        <label for="title">
+                            Service Title <span class="field__required">required</span>
+                        </label>
+                        <input type="text" id="title" name="serviceName" placeholder="e.g. Full Engine Overhaul" required maxlength="80">
+                    </div>
+
+
+                    <div class="field">
+                        <label for="description">
+                            Description <span class="field__required">required</span>
+                        </label>
+                        <textarea id="description" name="description"
+                            placeholder="Describe what this service includes, tools used, estimated time..." rows="5"
+                            required>{{description}}</textarea>
+                    </div>
+                    
+                    <div class="field">
+                        <label for="price">
+                            PRICE <span class="field__required">required</span>
+                        </label>
+                        <textarea id="price" name="price"
+                            placeholder="Price " rows="1"
+                            required>{{price}}</textarea>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ── RIGHT SIDEBAR ───────────────────────── -->
+        <div class="cs-sidebar">
+
+            <!-- Card Preview -->
+            <div class="cs-card">
+                <div class="cs-card__head">
+                    <span class="cs-card__dot"></span>Card Preview
+                </div>
+                <div class="cs-card__body">
+                    <div class="svc-card" style="background:var(--surface)">
+                        <h3 class="svc-card__title" id="previewTitle">Service Title</h3>
+                        <p class="svc-card__desc" id="previewDesc">Your description will appear here...</p>
+                        <p class="svc-card__price" id="previewPrice">Price</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Publish -->
+            <div class="cs-card">
+                <div class="cs-card__head">
+                    <span class="cs-card__dot"></span>Publish
+                </div>
+                <div class="cs-card__body">
+                    <button type="submit" class="btn btn--primary btn--full">
+                        Publish Service →
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script src="../js/service.js"></script>

@@ -10,6 +10,6 @@ bookingRouter
     .get("/", Protected(true), bookingsController.getProperBooking)
     .post("/confirm-otp", Protected(true), bookingsController.createBooking)
     .post("/send-otp", Protected(true), bookingsController.sendOTP)
-    .patch("/status", Protected(true), Role("ADMIN"), bookingsController.updateBooking) //ONLY FOR ADMINS
+    .patch("/status/:id", Protected(true), bookingsController.updateBooking) //ONLY FOR ADMINS
 
 export default bookingRouter;

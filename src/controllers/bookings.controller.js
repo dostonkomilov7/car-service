@@ -18,14 +18,12 @@ class BookingController {
 
     createBooking = async (req, res) => {
         const { bookingId, otp } = req.body;
-        console.log(bookingId, "BIIIIIDDDDDD")
         
         if (!/^\d{6}$/.test(otp)) {
             return res.redirect(`/booking/create?error='Incorrect format'`);
         }
         
         const { rows: booking } = await pool.query("SELECT * FROM bookings WHERE id = $1", [bookingId]);
-        console.log(booking[0]?.otp, "OTPPPPREAALLLL")
 
         if (!booking[0]) {
             console.log('Booking is not found');
@@ -73,13 +71,19 @@ class BookingController {
     };
 
     updateBooking = async (req, res) => {
-        const { userId, serviceId, status } = req.body;
+        const { id } = req.params;
+        const { rows: booking } = await pool.query("SELECT * FROM bookings WHERE id = $1", [id]);
 
-        if (status === "Confirmed") {
-            await pool.query("UPDATE bookings SET status = 'Done' ")
+        if (!booking[0]) {
+            console.log('Booking is not found');
+            return res.redirect("/api/dashboard?error='Booking is not found'");
         }
 
-        res.redirect("/api/dashboard");
+        if (booking[0].status.toLowerCase() === "confirmed") {
+            await pool.query("UPDATE bookings SET status = 'Done' WHERE id = $1 ", [id])
+        }
+
+        res.redirect("/api/dashboard?success='SERVICE IS SUCCESSFULLY COMPLETED'");
     };
 }
 

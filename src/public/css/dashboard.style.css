@@ -162,22 +162,10 @@ tr:hover {
 .device {
     padding: 3px 8px;
     border: 1px solid;
+    border-radius: 10px;
     font-size: 12px;
-}
-
-.device.ios {
     color: #85b7eb;
     border-color: #185fa5;
-}
-
-.device.mac {
-    color: #85b7eb;
-    border-color: #185fa5;
-}
-
-.device.windows {
-    color: #9be28a;
-    border-color: #3b6d11;
 }
 
 /* STATUS */
@@ -185,11 +173,12 @@ tr:hover {
     padding: 3px 8px;
     font-size: 12px;
     border: 1px solid;
+    border-radius: 10px;
 }
 
 .status.confirmed {
-    color: #9be28a;
-    border-color: #3b6d11;
+    color: #85b7eb;
+    border-color: #185fa5;
 }
 
 .status.pending {
@@ -204,8 +193,10 @@ tr:hover {
 
 /* ACTIONS */
 .actions button {
-    background: none;
-    border: 1px solid var(--border);
+    background-color: transparent;
+    border: none;
     margin-left: 5px;
     cursor: pointer;
+    color: #7ed957;
+    font-size: 20px;
 }

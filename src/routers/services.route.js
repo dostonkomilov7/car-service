@@ -7,7 +7,7 @@ const serviceRouter = Router();
 
 serviceRouter
     // .get("/",Protected(true), servicesController.getAllServices)
-    .post("/", Role("ADMIN"), servicesController.createService) //ONLY FOR ADMINS
-    .post("/delete", Role("ADMIN"), servicesController.deleteService) //ONLY FOR ADMINS
+    .post("/", servicesController.createService) //ONLY FOR ADMINS
+    .delete("/delete", Role("ADMIN"), servicesController.deleteService) //ONLY FOR ADMINS
 
 export default serviceRouter;

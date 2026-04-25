@@ -88,8 +88,8 @@ class AuthController {
             const device = ua.getResult();
 
             const { rows: newUser } = await pool.query(
-                "INSERT INTO users(name, role, device_name, device_type, email, password) VALUES ($1, USER, $2, $3, $4, $5) RETURNING id",
-                [name, device.device.model || device.device.vendor, device.device.type || "desktop", email, hashedPassword]
+                "INSERT INTO users(name, role, device_name, device_type, email, password) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id",
+                [name, "USER", device.device.model || device.device.vendor, device.device.type || "desktop", email, hashedPassword]
             );
 
             const accessToken = await this.#_generateAccessToken({ id: newUser[0].id, role: newUser[0].role, device: device.device.model });
@@ -155,6 +155,35 @@ class AuthController {
         }
 
     };
+
+    seedAdmins = async () => {
+        const admins = [
+            {
+                name: "admin",
+                email: "doston777@example.com",
+                password: "ad7733min",
+            }
+        ];
+
+        for (let a of admins) {
+            const { rows: existingUser } = await pool.query(
+                "SELECT * FROM users WHERE email = $1", [a.email],
+            );
+
+            const ua = new UAParser("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.4 Safari/605.1.15");
+            const device = ua.getResult();
+
+            if (!existingUser[0]) {
+                const hashedPass = await this.#_hashPassword(a.password)
+                await pool.query(
+                    "INSERT INTO users(name, email, password, role, device_name, device_type) VALUES ($1, $2, $3, $4, $5, $6)",
+                    [a.name, a.email, hashedPass, "ADMIN", device.device.model || device.device.vendor, device.device.type || "desktop"],
+                )
+            }
+        }
+
+        console.log("ADMIN SEEDED ✅")
+    }
 
     #_generateAccessToken = (payload) => {
         const token = jwt.sign(

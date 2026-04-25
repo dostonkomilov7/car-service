@@ -7,6 +7,7 @@ import expHbs from "express-handlebars"
 import authRouter from "./routers/auth.route.js";
 import bookingRouter from "./routers/bookings.route.js";
 import methodOverride from "method-override";
+import authController from "./controllers/auth.controller.js";
 
 const app = express();
 
@@ -30,6 +31,8 @@ app.use("/api", apiRouter);
     
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")))
 app.use(express.static(path.join(process.cwd(),"src", "public")))
+
+// await authController.seedAdmins();
 
 app.all("*splat", (req, res) => {
     res.status(404).send({
