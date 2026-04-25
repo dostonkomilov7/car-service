@@ -62,7 +62,7 @@ class BookingController {
 
         const { rows: booking } = await pool.query(
             "INSERT INTO bookings(user_id, service_id, status, otp, otp_expire) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-            [userId, service_id[0].id, "Pending", otp, expires],
+            [userId, service_id[0].id, "pending", otp, expires],
         );
 
         sendEmail("dostonkomilov070@gmail.com", "VERIFY OTP", `6-DIGIT CODE: ${otp}`)

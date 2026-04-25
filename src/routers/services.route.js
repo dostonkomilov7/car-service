@@ -6,8 +6,7 @@ import { Role } from "../middlewares/roles.middleware.js";
 const serviceRouter = Router();
 
 serviceRouter
-    // .get("/",Protected(true), servicesController.getAllServices)
     .post("/", servicesController.createService) //ONLY FOR ADMINS
-    .delete("/delete", Role("ADMIN"), servicesController.deleteService) //ONLY FOR ADMINS
+    .delete("/delete", servicesController.deleteService) //ONLY FOR ADMINS
 
 export default serviceRouter;

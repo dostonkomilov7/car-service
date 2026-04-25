@@ -76,20 +76,36 @@ apiRouter.get("/dashboard", Protected(true), Role("ADMIN"), async(req, res) => {
     WHERE status != 'Done'`,
   );
 
+  const { rows: totalBookings } = await pool.query("SELECT COUNT(id) FROM bookings")
+  const { rows: countPending } = await pool.query("SELECT COUNT(id) FROM bookings WHERE status = 'pending'")
+  const { rows: countConfirmed } = await pool.query("SELECT COUNT(id) FROM bookings WHERE status = 'confirmed'")
+  const { rows: countDone } = await pool.query("SELECT COUNT(id) FROM bookings WHERE status = 'Done'")
+  const stats = {
+    total: totalBookings[0].count,
+    pending: countPending[0].count,
+    confirmed: countConfirmed[0].count,
+    done: countDone[0].count
+  }
 
   if (!bookings[0]) {
-    return res.render("admin/dashboard", { error, message: "Bookings not found" });
+    return res.render("admin/dashboard", { stats, error, message: "Bookings not found" });
   }
   console.log(bookings[0].id);
   const confirmedDate = bookings[0].date.toString();
 
-  res.render("admin/dashboard", { bookings: bookings, date: confirmedDate, error, message, success });
+  res.render("admin/dashboard", { bookings: bookings, date: confirmedDate, stats, error, message, success });
 });
 
 apiRouter.get("/create-service", Protected(true), Role("ADMIN"), (req, res) => {
   const { error, message, success } = req.query;
 
   res.render("admin/create-service", { title: "Create Service", error, message, success });
+});
+
+apiRouter.get("/delete-service", Protected(true), Role("ADMIN"), (req, res) => {
+  const { error, message, success } = req.query;
+
+  res.render("admin/delete-service", { title: "DELETE Service", error, message, success });
 });
 
 apiRouter.get("/logout", (req, res) => {

@@ -16,16 +16,14 @@ class ServiceController {
 
     deleteService = async (req, res) => {
         const {serviceName} = req.body;
-
-        const service_id = await pool.query("SELECT id FROM services WHERE service_name = $1", [serviceName]);
-
-        if(!service_id){
-            res.redirect("/api/home")
+        const {rows: service_id} = await pool.query("SELECT id FROM services WHERE service_name = $1", [serviceName]);
+        if(!service_id[0].id){
+            res.redirect("/api/dashboard?error=SERVICE IS NOT FOUND")
         }
 
-        await pool.query("DELETE FROM services WHERE id = $1", [servie_id]);
+        await pool.query("DELETE FROM services WHERE id = $1", [service_id[0].id]);
 
-        res.redirect("/api/dashboard")
+        res.redirect("/api/dashboard?success=SERVICE HAS BEEN SUCCESSFULLY DELETED")
     };
 }
 

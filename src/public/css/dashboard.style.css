@@ -47,14 +47,6 @@ h1 {
     border-radius: 10px;
 }
 
-.btn-secondary {
-    background-color: red;
-    font-weight: bold;
-    padding: 12px 25px;
-    border-radius: 10px;
-    color: white;
-}
-
 /* STATS */
 .stats {
     display: grid;
@@ -67,6 +59,7 @@ h1 {
     background: var(--card);
     border: 1px solid var(--border);
     padding: 15px;
+    display: grid;
 }
 
 .stat span {
@@ -139,17 +132,6 @@ tr:hover {
     gap: 10px;
 }
 
-.avatar {
-    width: 30px;
-    height: 30px;
-    background: rgba(240, 165, 0, 0.1);
-    color: var(--amber);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
 .email {
     color: var(--muted);
 }
@@ -192,11 +174,11 @@ tr:hover {
 }
 
 /* ACTIONS */
-.actions button {
-    background-color: transparent;
+.btn-delete {
+    background: var(--border);
+    font-weight: bold;
+    padding: 13px 25px;
+    border-radius: 10px;
     border: none;
-    margin-left: 5px;
-    cursor: pointer;
-    color: #7ed957;
-    font-size: 20px;
+    color: red;
 }

@@ -68,6 +68,14 @@
   overflow: hidden;
 }
 
+.cs-card-delete{
+  height: 9.9rem;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
 .cs-card__head {
   padding: 0.9rem 1.25rem;
   border-bottom: 1px solid var(--border);
@@ -265,4 +273,8 @@
   font-size: 20px;
   font-weight: 800;
   color: var(--amber);
+}
+
+.btn-delete{
+  color: red;
 }

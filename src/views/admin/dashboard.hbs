@@ -12,6 +12,7 @@
 
     <div class="actions">
       <a href="/api/create-service" class="btn-primary">+ New Service</a>
+      <a href="/api/delete-service"><button class="btn-delete">DELETE SERVICE</button></a>
     </div>
   </div>
 
@@ -23,8 +24,8 @@
     </div>
 
     <div class="stat">
-      <span>This Month</span>
-      <strong class="amber">{{stats.month}}</strong>
+      <span>Completed</span>
+      <strong class="amber">{{stats.done}}</strong>
     </div>
 
     <div class="stat">
@@ -86,7 +87,7 @@
               </td>
 
               <td class="actions">
-                <button type="submit"><i class="fa-regular fa-circle-check"></i></button>
+                <button type="submit" class="btn-done"><i class="fa-regular fa-circle-check"></i></button>
               </td>
             </tr>
           </form>
