@@ -67,6 +67,7 @@ class AuthController {
 
         } catch (error) {
             console.log(error)
+            return res.redirect("/api/login?error='ERROR'")
         }
     };
 
@@ -126,6 +127,7 @@ class AuthController {
 
         } catch (error) {
             console.log(error)
+            return res.redirect("/api/login?error='ERROR'")
         }
     };
 
@@ -152,6 +154,7 @@ class AuthController {
             });
         } catch (error) {
             console.log(error)
+            return res.redirect("/api/home?error='ERROR'")
         }
 
     };

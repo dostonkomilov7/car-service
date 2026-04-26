@@ -6,8 +6,6 @@ import { Role } from "../middlewares/roles.middleware.js";
 const bookingRouter = Router();
 
 bookingRouter
-    .get("//all", Protected(true), Role("ADMIN"), bookingsController.getAllBookings) //ONLY FOR ADMINS
-    .get("/", Protected(true), bookingsController.getProperBooking)
     .post("/confirm-otp", Protected(true), bookingsController.createBooking)
     .post("/send-otp", Protected(true), bookingsController.sendOTP)
     .patch("/status/:id", Protected(true), bookingsController.updateBooking) //ONLY FOR ADMINS

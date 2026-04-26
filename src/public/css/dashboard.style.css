@@ -47,6 +47,15 @@ h1 {
     border-radius: 10px;
 }
 
+.btn-done {
+    background-color: transparent;
+    font-size: large;
+    color: green;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
 /* STATS */
 .stats {
     display: grid;
