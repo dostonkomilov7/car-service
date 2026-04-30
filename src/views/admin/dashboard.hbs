@@ -59,7 +59,7 @@
 
         <tbody id="tableBody">
           {{#each bookings}}
-          <form action="/api/bookings/status/{{this.id}}?_method=PATCH" method="post">
+          <form action="/api/bookings/status/{{this.id}}?_method=PATCH&email={{this.email}}" method="post">
             <tr>
               <td class="id">{{this.id}}</td>
               <td class="name">

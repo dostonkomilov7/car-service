@@ -25,25 +25,29 @@ class BookingController {
             const { rows: booking } = await pool.query("SELECT * FROM bookings WHERE id = $1", [bookingId]);
     
             if (!booking[0]) {
-                console.log('Booking is not found');
                 return res.redirect("/api/create?error='Booking is not found'");
             }
             
+            const { rows: email } = await pool.query("SELECT * FROM users WHERE id = $1", [booking[0]?.user_id]);
+            
             if (Date.now() > Number(booking[0]?.otp_expire)) {
-                console.log('OTP expired');
+                await pool.query(`DELETE FROM bookings WHERE id = $1`, [bookingId]);
                 return res.redirect("/api/create?error='OTP expired'");
             }
             
             if (Number(booking[0]?.otp) !== Number(otp)) {
-                console.log('OTP invalid');
+                await pool.query(`DELETE FROM bookings WHERE id = $1`, [bookingId]);
                 return res.redirect("/api/create?error='OTP invalid'");
             }
-    
-            await pool.query("UPDATE bookings SET otp = null, otp_expire = null, status = 'confirmed' WHERE id = $1", [bookingId])
-    
+            // email[0]?.email
+            await pool.query("UPDATE bookings SET otp = null, otp_expire = null WHERE id = $1", [bookingId])
+            sendEmail("dostonkomilov070@gmail.com", "AUTO PRO", "HELLO, YOUR BOOKING IS PENDING ⏳. WE WILL RESPOND SOON");
+
             res.redirect("/api/home?message='SUCCESSFULLY BOOKED'");
             
         } catch (error) {
+            console.log(error);
+            await pool.query(`DELETE FROM bookings WHERE id = $1`, [req.body.bookingId]);
             return res.redirect("/api/create?error='ERROR'")
         }
     };
@@ -72,6 +76,7 @@ class BookingController {
             return res.redirect(`/api/otp?id=${booking[0].id}`);
             
         } catch (error) {
+            console.log(error);
             return res.redirect("/api/create?error='ERROR'")
         }
     };
@@ -79,18 +84,27 @@ class BookingController {
     updateBooking = async (req, res) => {
         try {
             const { id } = req.params;
+            const { email } = req.query;
             const { rows: booking } = await pool.query("SELECT * FROM bookings WHERE id = $1", [id]);
-    
+
             if (!booking[0]) {
                 console.log('Booking is not found');
                 return res.redirect("/api/dashboard?error='Booking is not found'");
             }
     
             if (booking[0].status.toLowerCase() === "confirmed") {
-                await pool.query("UPDATE bookings SET status = 'Done' WHERE id = $1 ", [id])
+                await pool.query("UPDATE bookings SET status = 'Done' WHERE id = $1 ", [id]);
+                sendEmail(email, "AUTO PRO", "HELLO, YOUR BOOKING IS DONE ✅. YOU MAY CHECK OUR SERVICES AND TAKE A CAR");
+                return res.redirect("/api/dashboard?success='SERVICE IS SUCCESSFULLY COMPLETED'");
+            }
+            
+            if (booking[0].status.toLowerCase() === "pending") {
+                await pool.query("UPDATE bookings SET status = 'confirmed' WHERE id = $1 ", [id])
+                sendEmail(email, "AUTO PRO", "HELLO, YOUR BOOKING IS CONFIRMED ✅. SOON, WE WILL START WORK");
+                return res.redirect("/api/dashboard?success='SERVICE IS SUCCESSFULLY CONFIRMED'");
             }
     
-            res.redirect("/api/dashboard?success='SERVICE IS SUCCESSFULLY COMPLETED'");
+            res.redirect("/api/dashboard?error='ERROR'")
         } catch (error) {
             return res.redirect("/api/dashboard?error='ERROR'")
         }

@@ -35,8 +35,8 @@ class AuthController {
                 [device.device.model || device.device.vendor, device.device.type || "desktop"]
             );
 
-            const accessToken = await this.#_generateAccessToken({ id: existingUser[0].id, role: existingUser[0].role, device: device.device.model });
-            const refreshToken = await this.#_generateRefreshToken({ id: existingUser[0].id, role: existingUser[0].role, device: device.device.model });
+            const accessToken =  this.#_generateAccessToken({ id: existingUser[0].id, role: existingUser[0].role, device: device.device.model });
+            const refreshToken =  this.#_generateRefreshToken({ id: existingUser[0].id, role: existingUser[0].role, device: device.device.model });
             res.cookie("userId", existingUser[0].id, {
                 httpOnly: false,
                 secure: false,
@@ -93,8 +93,8 @@ class AuthController {
                 [name, "USER", device.device.model || device.device.vendor, device.device.type || "desktop", email, hashedPassword]
             );
 
-            const accessToken = await this.#_generateAccessToken({ id: newUser[0].id, role: newUser[0].role, device: device.device.model });
-            const refreshToken = await this.#_generateRefreshToken({ id: newUser[0].id, role: newUser[0].role, device: device.device.model });
+            const accessToken =  this.#_generateAccessToken({ id: newUser[0].id, role: newUser[0].role, device: device.device.model });
+            const refreshToken = this.#_generateRefreshToken({ id: newUser[0].id, role: newUser[0].role, device: device.device.model });
 
             res.cookie("userId", newUser[0].id, {
                 httpOnly: false,
@@ -163,8 +163,8 @@ class AuthController {
         const admins = [
             {
                 name: "admin",
-                email: "doston777@example.com",
-                password: "ad7733min",
+                email: process.env.ADMIN_EMAIL,
+                password:  process.env.ADMIN_PASS,
             }
         ];
 

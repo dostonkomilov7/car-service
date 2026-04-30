@@ -24,9 +24,17 @@ apiRouter.get("/home", Protected(true), async (req, res) => {
   }
 });
 
-apiRouter.get("/login", (req, res) => {
+apiRouter.get("/login", async(req, res) => {
   try {
     const { error, message, success } = req.query;
+    // const userId = req.cookies.userId;
+
+    // const { rows: admin } = await pool.query("SELECT * FROM users WHERE id = $1", [userId]);
+
+    // if(admin[0].role === "ADMIN"){
+    //   window.history.replaceState({}, '', 'api/dashboard');
+    //   return res.render("admin/dashboard", { title: "Dashboard", error, message, success });
+    // }
   
     res.render("auth/login", { title: "Login", error, message, success });
     
