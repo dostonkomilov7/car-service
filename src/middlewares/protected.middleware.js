@@ -7,7 +7,7 @@ export const Protected = (isProtected = true) => {
         if (!isProtected) return next()
 
         const token = req.cookies?.accessToken;
-        if (!token) return res.redirect("/api/login");
+        if (!token) return res.redirect("/login");
 
         try {
             const payload = jwt.verify(token, jwtConfig.ACCESS_KEY);
@@ -16,7 +16,7 @@ export const Protected = (isProtected = true) => {
         } catch (error) {
             if (error instanceof jwt.TokenExpiredError) {
                 const refreshToken = req.cookies?.refreshToken;
-                if (!refreshToken) return res.redirect("/api/login");
+                if (!refreshToken) return res.redirect("/login");
 
                 try {
                     const payload = jwt.verify(refreshToken, jwtConfig.REFRESH_KEY);
@@ -35,12 +35,12 @@ export const Protected = (isProtected = true) => {
                     req.user = payload;
                     return next();
                 } catch {
-                    return res.redirect("/api/login");
+                    return res.redirect("/login");
                 }
             }
 
             if (error instanceof jwt.JsonWebTokenError) {
-                return res.redirect("/api/login");
+                return res.redirect("/login");
             }
 
             next(error);

@@ -4,10 +4,9 @@ import appConfig from "./configs/app.config.js";
 import path from "node:path";
 import cookieParser from "cookie-parser";
 import expHbs from "express-handlebars"
-import authRouter from "./routers/auth.route.js";
-import bookingRouter from "./routers/bookings.route.js";
 import methodOverride from "method-override";
 import authController from "./controllers/auth.controller.js";
+import router from "./routers/index.js";
 
 const app = express();
 
@@ -28,6 +27,7 @@ app.set("view engine", "hbs");
 app.set("views", path.join(process.cwd(), "src", "views"));
 
 app.use("/api", apiRouter);
+app.use("/", router);
     
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")))
 app.use(express.static(path.join(process.cwd(),"src", "public")))

@@ -12,9 +12,9 @@ class ServiceController {
                 [serviceName, description, price],
             );
     
-            res.redirect("/api/dashboard?success='SERVICE IS SUCCESSFULLY CREATED'");
+            res.redirect("/dashboard?success='SERVICE IS SUCCESSFULLY CREATED'");
         } catch (error) {
-            return res.redirect("/api/dashboard?error='ERROR'")
+            return res.redirect("/dashboard?error='ERROR'")
         }
     };
 
@@ -23,14 +23,14 @@ class ServiceController {
             const {serviceName} = req.body;
             const {rows: service_id} = await pool.query("SELECT id FROM services WHERE service_name = $1", [serviceName]);
             if(!service_id[0].id){
-                res.redirect("/api/dashboard?error=SERVICE IS NOT FOUND")
+                res.redirect("/dashboard?error=SERVICE IS NOT FOUND")
             }
     
             await pool.query("DELETE FROM services WHERE id = $1", [service_id[0].id]);
     
-            res.redirect("/api/dashboard?success=SERVICE HAS BEEN SUCCESSFULLY DELETED")
+            res.redirect("/dashboard?success=SERVICE HAS BEEN SUCCESSFULLY DELETED")
         } catch (error) {
-            return res.redirect("/api/dashboard?error='ERROR'")
+            return res.redirect("/dashboard?error='ERROR'")
         }
     };
 }

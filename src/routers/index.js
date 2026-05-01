@@ -7,13 +7,14 @@ import pool from "../configs/db.config.js";
 import { Role } from "../middlewares/roles.middleware.js";
 
 const apiRouter = Router();
+const router = Router();
 
 apiRouter
   .use("/auth", authRouter)
   .use("/services", serviceRouter)
   .use("/bookings", bookingRouter)
 
-apiRouter.get("/home", Protected(true), async (req, res) => {
+router.get("/", Protected(true), async (req, res) => {
   try {
     const { error, message, success } = req.query;
     const { rows: services } = await pool.query("SELECT * FROM services");
@@ -24,7 +25,7 @@ apiRouter.get("/home", Protected(true), async (req, res) => {
   }
 });
 
-apiRouter.get("/login", async(req, res) => {
+router.get("/login", async(req, res) => {
   try {
     const { error, message, success } = req.query;
     // const userId = req.cookies.userId;
@@ -43,7 +44,7 @@ apiRouter.get("/login", async(req, res) => {
   }
 });
 
-apiRouter.get("/register", (req, res) => {
+router.get("/register", (req, res) => {
   try {
     const { error, message, success } = req.query;
   
@@ -54,7 +55,7 @@ apiRouter.get("/register", (req, res) => {
   }
 });
 
-apiRouter.get("/create", Protected(true), (req, res) => {
+router.get("/create", Protected(true), (req, res) => {
   try {
     const { error, message, success } = req.query;
   
@@ -64,7 +65,7 @@ apiRouter.get("/create", Protected(true), (req, res) => {
   }
 });
 
-apiRouter.get("/my-bookings", Protected(true), async (req, res) => {
+router.get("/my-bookings", Protected(true), async (req, res) => {
   try {
     const userId = req.cookies.userId;
     const { error, message, success } = req.query;
@@ -89,7 +90,7 @@ apiRouter.get("/my-bookings", Protected(true), async (req, res) => {
   }
 });
 
-apiRouter.get("/otp", Protected(true), (req, res) => {
+router.get("/otp", Protected(true), (req, res) => {
   try {
     const { id } = req.query;
     const { error, message, success } = req.query;
@@ -101,7 +102,7 @@ apiRouter.get("/otp", Protected(true), (req, res) => {
   }
 });
 
-apiRouter.get("/dashboard", Protected(true), Role("ADMIN"), async(req, res) => {
+router.get("/dashboard", Protected(true), Role("ADMIN"), async(req, res) => {
   try {
     const { error, message, success } = req.query;
   
@@ -137,7 +138,7 @@ apiRouter.get("/dashboard", Protected(true), Role("ADMIN"), async(req, res) => {
   }
 });
 
-apiRouter.get("/create-service", Protected(true), Role("ADMIN"), (req, res) => {
+router.get("/create-service", Protected(true), Role("ADMIN"), (req, res) => {
   try {
     const { error, message, success } = req.query;
   
@@ -147,7 +148,7 @@ apiRouter.get("/create-service", Protected(true), Role("ADMIN"), (req, res) => {
   }
 });
 
-apiRouter.get("/delete-service", Protected(true), Role("ADMIN"), (req, res) => {
+router.get("/delete-service", Protected(true), Role("ADMIN"), (req, res) => {
   try {
     const { error, message, success } = req.query;
   
@@ -157,8 +158,9 @@ apiRouter.get("/delete-service", Protected(true), Role("ADMIN"), (req, res) => {
   }
 });
 
-apiRouter.get("/logout", (req, res) => {
-  res.redirect("/api/login");
+router.get("/logout", (req, res) => {
+  res.redirect("/login");
 });
 
+export default router;
 export default apiRouter;

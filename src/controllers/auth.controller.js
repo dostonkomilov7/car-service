@@ -18,13 +18,13 @@ class AuthController {
             );
 
             if (!existingUser[0]) {
-                return res.redirect("/api/login?error=Email is not found");
+                return res.redirect("/login?error=Email is not found");
             }
 
             const isPassSame = await this.#_comparePassword(password, existingUser[0].password);
 
             if (!isPassSame) {
-                return res.redirect("/api/login?error=Password is invalid");
+                return res.redirect("/login?error=Password is invalid");
             }
 
             const ua = new UAParser(req.headers["user-agent"]);
@@ -63,11 +63,11 @@ class AuthController {
                 maxAge: 5 * 24 * 60 * 60 * 1000,
             });
 
-            res.redirect("/api/home")
+            res.redirect("/")
 
         } catch (error) {
             console.log(error)
-            return res.redirect("/api/login?error='ERROR'")
+            return res.redirect("/login?error='ERROR'")
         }
     };
 
@@ -123,11 +123,11 @@ class AuthController {
                 maxAge: 20 * 60 * 1000,
             });
 
-            res.redirect("/api/home");
+            res.redirect("/home");
 
         } catch (error) {
             console.log(error)
-            return res.redirect("/api/login?error='ERROR'")
+            return res.redirect("/login?error='ERROR'")
         }
     };
 
@@ -154,7 +154,7 @@ class AuthController {
             });
         } catch (error) {
             console.log(error)
-            return res.redirect("/api/home?error='ERROR'")
+            return res.redirect("/?error='ERROR'")
         }
 
     };

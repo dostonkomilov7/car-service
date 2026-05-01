@@ -10,7 +10,7 @@ class BookingController {
     
             res.render("admin/dashboard", { bookings: bookings[0] });
         } catch (error) {
-            return res.redirect("/api/dashboard?error='ERROR'")
+            return res.redirect("/dashboard?error='ERROR'")
         }
     };
 
@@ -25,30 +25,30 @@ class BookingController {
             const { rows: booking } = await pool.query("SELECT * FROM bookings WHERE id = $1", [bookingId]);
     
             if (!booking[0]) {
-                return res.redirect("/api/create?error='Booking is not found'");
+                return res.redirect("/create?error='Booking is not found'");
             }
             
             const { rows: email } = await pool.query("SELECT * FROM users WHERE id = $1", [booking[0]?.user_id]);
             
             if (Date.now() > Number(booking[0]?.otp_expire)) {
                 await pool.query(`DELETE FROM bookings WHERE id = $1`, [bookingId]);
-                return res.redirect("/api/create?error='OTP expired'");
+                return res.redirect("/create?error='OTP expired'");
             }
             
             if (Number(booking[0]?.otp) !== Number(otp)) {
                 await pool.query(`DELETE FROM bookings WHERE id = $1`, [bookingId]);
-                return res.redirect("/api/create?error='OTP invalid'");
+                return res.redirect("/create?error='OTP invalid'");
             }
             // email[0]?.email
             await pool.query("UPDATE bookings SET otp = null, otp_expire = null WHERE id = $1", [bookingId])
             sendEmail("dostonkomilov070@gmail.com", "AUTO PRO", "HELLO, YOUR BOOKING IS PENDING ⏳. WE WILL RESPOND SOON");
 
-            res.redirect("/api/home?message='SUCCESSFULLY BOOKED'");
+            res.redirect("/?message='SUCCESSFULLY BOOKED'");
             
         } catch (error) {
             console.log(error);
             await pool.query(`DELETE FROM bookings WHERE id = $1`, [req.body.bookingId]);
-            return res.redirect("/api/create?error='ERROR'")
+            return res.redirect("/create?error='ERROR'")
         }
     };
 
@@ -58,7 +58,7 @@ class BookingController {
             const {rows: service_id} = await pool.query(`SELECT * FROM services WHERE service_name ILIKE '%${serviceName}%'`);
     
             if (!service_id[0].id) {
-                return res.redirect("/api/create?error='SERVICE IS NOT FOUND'")
+                return res.redirect("/create?error='SERVICE IS NOT FOUND'")
             }
     
             const userId = req.cookies?.userId;
@@ -73,11 +73,11 @@ class BookingController {
     
             sendEmail(email, "VERIFY OTP", `6-DIGIT CODE: ${otp}`)
     
-            return res.redirect(`/api/otp?id=${booking[0].id}`);
+            return res.redirect(`/otp?id=${booking[0].id}`);
             
         } catch (error) {
             console.log(error);
-            return res.redirect("/api/create?error='ERROR'")
+            return res.redirect("/create?error='ERROR'")
         }
     };
 
@@ -89,24 +89,24 @@ class BookingController {
 
             if (!booking[0]) {
                 console.log('Booking is not found');
-                return res.redirect("/api/dashboard?error='Booking is not found'");
+                return res.redirect("/dashboard?error='Booking is not found'");
             }
     
             if (booking[0].status.toLowerCase() === "confirmed") {
                 await pool.query("UPDATE bookings SET status = 'Done' WHERE id = $1 ", [id]);
                 sendEmail(email, "AUTO PRO", "HELLO, YOUR BOOKING IS DONE ✅. YOU MAY CHECK OUR SERVICES AND TAKE A CAR");
-                return res.redirect("/api/dashboard?success='SERVICE IS SUCCESSFULLY COMPLETED'");
+                return res.redirect("/dashboard?success='SERVICE IS SUCCESSFULLY COMPLETED'");
             }
             
             if (booking[0].status.toLowerCase() === "pending") {
                 await pool.query("UPDATE bookings SET status = 'confirmed' WHERE id = $1 ", [id])
                 sendEmail(email, "AUTO PRO", "HELLO, YOUR BOOKING IS CONFIRMED ✅. SOON, WE WILL START WORK");
-                return res.redirect("/api/dashboard?success='SERVICE IS SUCCESSFULLY CONFIRMED'");
+                return res.redirect("/dashboard?success='SERVICE IS SUCCESSFULLY CONFIRMED'");
             }
     
-            res.redirect("/api/dashboard?error='ERROR'")
+            res.redirect("/dashboard?error='ERROR'")
         } catch (error) {
-            return res.redirect("/api/dashboard?error='ERROR'")
+            return res.redirect("/dashboard?error='ERROR'")
         }
             
     };
