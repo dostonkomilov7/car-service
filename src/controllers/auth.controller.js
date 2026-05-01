@@ -5,6 +5,11 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { ConflictRequest } from "../exceptions/conflict-request.exception.js";
 import { UAParser } from "ua-parser-js";
+import { config } from "dotenv";
+import signature from "../configs/signed.config.js";
+import { sendEmail } from "../helpers/mail.helper.js";
+
+config({ quiet: true });
 
 class AuthController {
     constructor() { }
@@ -35,8 +40,8 @@ class AuthController {
                 [device.device.model || device.device.vendor, device.device.type || "desktop"]
             );
 
-            const accessToken =  this.#_generateAccessToken({ id: existingUser[0].id, role: existingUser[0].role, device: device.device.model });
-            const refreshToken =  this.#_generateRefreshToken({ id: existingUser[0].id, role: existingUser[0].role, device: device.device.model });
+            const accessToken = this.#_generateAccessToken({ id: existingUser[0].id, role: existingUser[0].role, device: device.device.model });
+            const refreshToken = this.#_generateRefreshToken({ id: existingUser[0].id, role: existingUser[0].role, device: device.device.model });
             res.cookie("userId", existingUser[0].id, {
                 httpOnly: false,
                 secure: false,
@@ -66,7 +71,6 @@ class AuthController {
             res.redirect("/")
 
         } catch (error) {
-            console.log(error)
             return res.redirect("/login?error='ERROR'")
         }
     };
@@ -93,7 +97,7 @@ class AuthController {
                 [name, "USER", device.device.model || device.device.vendor, device.device.type || "desktop", email, hashedPassword]
             );
 
-            const accessToken =  this.#_generateAccessToken({ id: newUser[0].id, role: newUser[0].role, device: device.device.model });
+            const accessToken = this.#_generateAccessToken({ id: newUser[0].id, role: newUser[0].role, device: device.device.model });
             const refreshToken = this.#_generateRefreshToken({ id: newUser[0].id, role: newUser[0].role, device: device.device.model });
 
             res.cookie("userId", newUser[0].id, {
@@ -126,7 +130,6 @@ class AuthController {
             res.redirect("/home");
 
         } catch (error) {
-            console.log(error)
             return res.redirect("/login?error='ERROR'")
         }
     };
@@ -153,18 +156,71 @@ class AuthController {
                 }
             });
         } catch (error) {
-            console.log(error)
             return res.redirect("/?error='ERROR'")
         }
 
     };
+
+    forgot = async (req, res) => {
+        try {
+            const BASE_URL = process.env.BASE_URL;
+            const { email } = req.body;
+
+            
+            const { rows: foundedUser } = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+            const db = await pool.query("SELECT current_database()");
+
+            if (!foundedUser[0]) {
+                return res.redirect("/forgot-password?error=EMAIL IS NOT FOUND");
+            }
+
+            const signedUrl = signature.sign(
+                `${BASE_URL}/reset-password?userId=${foundedUser[0].id}`,
+                { ttl: 300 },
+            );
+
+            const form = `
+                <p>Hello ${foundedUser[0].name},</p>
+                <p>Click below to reset your password. Link expires in 30 minutes.</p>
+                <a href="${signedUrl}" style="background:#f0a500;color:#0e0e0f;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:bold;">
+                    Reset Password
+                </a>
+                <p>If you didn't request this, ignore this email.</p>
+            `
+
+            // sendEmail(email, "Signed URL", form);
+            //TEST
+            sendEmail("dostonkomilov070@gmail.com", "Signed URL", form);
+            res.redirect(`/forgot-password?email=${email}`)
+        } catch (error) {
+            return res.redirect("/forgot-password?error=ERROR");
+        }
+    }
+
+    reset = async (req, res) => {
+        try {
+            const { userId } = req.query;
+            const { password } = req.body;
+
+            const hashedPass = await this.#_hashPassword(password);
+
+            await pool.query(
+                "UPDATE users SET password = $1 WHERE id = $2",
+                [hashedPass, userId]
+            );
+
+            res.redirect("/login?success=PASSWORD SUCCESSFULLY UPDATED");
+        } catch (error) {
+            return res.redirect("/reset-password?error=ERROR");
+        }
+    }
 
     seedAdmins = async () => {
         const admins = [
             {
                 name: "admin",
                 email: process.env.ADMIN_EMAIL,
-                password:  process.env.ADMIN_PASS,
+                password: process.env.ADMIN_PASS,
             }
         ];
 

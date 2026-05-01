@@ -5,6 +5,7 @@ import bookingRouter from "./bookings.route.js";
 import { Protected } from "../middlewares/protected.middleware.js";
 import pool from "../configs/db.config.js";
 import { Role } from "../middlewares/roles.middleware.js";
+import { VerifySignatureMiddleware } from "../middlewares/verify-signature.middleware.js";
 
 const apiRouter = Router();
 const router = Router();
@@ -28,14 +29,6 @@ router.get("/", Protected(true), async (req, res) => {
 router.get("/login", async(req, res) => {
   try {
     const { error, message, success } = req.query;
-    // const userId = req.cookies.userId;
-
-    // const { rows: admin } = await pool.query("SELECT * FROM users WHERE id = $1", [userId]);
-
-    // if(admin[0].role === "ADMIN"){
-    //   window.history.replaceState({}, '', 'api/dashboard');
-    //   return res.render("admin/dashboard", { title: "Dashboard", error, message, success });
-    // }
   
     res.render("auth/login", { title: "Login", error, message, success });
     
@@ -52,6 +45,28 @@ router.get("/register", (req, res) => {
     
   } catch (error) {
     res.render("auth/register", { error: "ERROR" });
+  }
+});
+
+router.get("/forgot-password", (req, res) => {
+  try {
+    const { error, email, success } = req.query;
+  
+    res.render("auth/forgot-password", { title: "Forgot Password", error, email, success });
+    
+  } catch (error) {
+    res.render("auth/forgot-password", { error: "ERROR" });
+  }
+});
+
+router.get("/reset-password", VerifySignatureMiddleware, (req, res) => {
+  try {
+    const { error, userId } = req.query;
+  
+    res.render("auth/reset-password", { title: "Reset Password", error, userId });
+    
+  } catch (error) {
+    res.render("auth/reset-password", { error: "ERROR" });
   }
 });
 
@@ -162,5 +177,4 @@ router.get("/logout", (req, res) => {
   res.redirect("/login");
 });
 
-export default router;
-export default apiRouter;
+export default {apiRouter, router};

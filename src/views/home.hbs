@@ -10,7 +10,7 @@
   <h1 class="hero__title">Your Car.<br><span class="accent">Our Craft.</span></h1>
   <p class="hero__sub">Professional car care from oil changes to full overhauls. Trusted by thousands of drivers — transparent pricing, expert hands, zero shortcuts.</p>
   <div class="hero__actions">
-    <a href="/api/create" class="btn btn--primary">Book a Service</a>
+    <a href="/create" class="btn btn--primary">Book a Service</a>
     <a href="#services" class="btn btn--ghost">View All Services</a>
   </div>
   <div class="hero__stats">
@@ -27,7 +27,7 @@
       <div class="section-label">What We Do</div>
       <h2 class="section-title">Our Services</h2>
     </div>
-    <a href="/api/create" class="services__link">Book Any Service →</a>
+    <a href="/create" class="services__link">Book Any Service →</a>
   </div>
 
   <div class="services__grid">
@@ -38,7 +38,7 @@
       <p class="svc-card__desc">{{this.description}}</p>
       <div class="svc-card__footer">
         <span class="svc-card__price">{{this.service_price}} sum</span>
-        <a href="/api/create?service={{this.slug}}" class="svc-card__btn">Book →</a>
+        <a href="/create" class="svc-card__btn">Book →</a>
       </div>
     </div>
     {{/each}}
@@ -73,7 +73,7 @@
 <section class="cta-banner">
   <h2 class="cta-banner__title">Ready to Book?</h2>
   <p class="cta-banner__sub">Takes 2 minutes. Choose your service, pick a date, done.</p>
-  <a href="/api/create" class="btn btn--dark">Book a Service Now</a>
+  <a href="/create" class="btn btn--dark">Book a Service Now</a>
 </section>
 
 {{> footer}}

@@ -24,7 +24,13 @@ body {
   align-items: center;
   justify-content: space-between;
 }
-
+.cs-back-btn {
+  color: white;
+  background-color: black;
+  padding: 10px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+}
 /* ── List reset ─────────────────────────────────────── */
 .bookings-page ul {
   list-style: none;

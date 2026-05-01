@@ -46,7 +46,6 @@ class BookingController {
             res.redirect("/?message='SUCCESSFULLY BOOKED'");
             
         } catch (error) {
-            console.log(error);
             await pool.query(`DELETE FROM bookings WHERE id = $1`, [req.body.bookingId]);
             return res.redirect("/create?error='ERROR'")
         }
@@ -76,7 +75,6 @@ class BookingController {
             return res.redirect(`/otp?id=${booking[0].id}`);
             
         } catch (error) {
-            console.log(error);
             return res.redirect("/create?error='ERROR'")
         }
     };
@@ -88,7 +86,6 @@ class BookingController {
             const { rows: booking } = await pool.query("SELECT * FROM bookings WHERE id = $1", [id]);
 
             if (!booking[0]) {
-                console.log('Booking is not found');
                 return res.redirect("/dashboard?error='Booking is not found'");
             }
     

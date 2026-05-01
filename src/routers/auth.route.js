@@ -9,6 +9,7 @@ const authRouter = Router();
 authRouter
     .post("/login", validationMiddleware(LoginSchema), authController.login)
     .post("/register", validationMiddleware(RegisterSchema), authController.register)
-    .post("/refresh", authController.refresh)
+    .post("/forgot-password", authController.forgot)
+    .post("/reset-password", authController.reset)
 
 export default authRouter;

@@ -4,7 +4,7 @@ export const sendEmail = (to, subject, content) => {
     transporter.sendMail({
         to,
         subject,
-        text: content,
+        html: content,
     }, (err, info) => {
         if(err) throw new Error("Mail yuborishda xatolik")
     })

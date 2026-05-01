@@ -1,24 +1,27 @@
 <link rel="stylesheet" href="../css/my-bookings.style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+  integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
 {{> alerts}}
 
+<a href="/" class="cs-back-btn">Back</a>
 <div class="bookings-page">
   <h1>My Bookings</h1>
 
-    <ul>
-      {{#each bookings}}
-        <li>
-          <div class="booking-icon">
-            <i class="svg fa-regular fa-calendar"></i>
-          </div>
-          <div class="booking-info">
-            <p class="name">{{this.service_name}}</p>
-            <p class="date">{{date}}</p>
-          </div>
-          <span class="booking-device">Device: {{this.device_name}}</span>
-          <span class="booking-status">Status: {{this.status}}</span>
-        </li>
-      {{/each}}
-    </ul>
+  <ul>
+    {{#each bookings}}
+    <li>
+      <div class="booking-icon">
+        <i class="svg fa-regular fa-calendar"></i>
+      </div>
+      <div class="booking-info">
+        <p class="name">{{this.service_name}}</p>
+        <p class="date">{{date}}</p>
+      </div>
+      <span class="booking-device">Device: {{this.device_name}}</span>
+      <span class="booking-status">Status: {{this.status}}</span>
+    </li>
+    {{/each}}
+  </ul>
   <p class="bookings-empty">No more bookings</p>
 </div>
