@@ -127,7 +127,7 @@ class AuthController {
                 maxAge: 20 * 60 * 1000,
             });
 
-            res.redirect("/home");
+            res.redirect("/");
 
         } catch (error) {
             return res.redirect("/login?error='ERROR'")
