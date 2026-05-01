@@ -188,9 +188,7 @@ class AuthController {
                 <p>If you didn't request this, ignore this email.</p>
             `
 
-            // sendEmail(email, "Signed URL", form);
-            //TEST
-            sendEmail("dostonkomilov070@gmail.com", "Signed URL", form);
+            sendEmail(email, "Signed URL", form);
             res.redirect(`/forgot-password?email=${email}`)
         } catch (error) {
             return res.redirect("/forgot-password?error=ERROR");
